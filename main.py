@@ -32,8 +32,8 @@ def main():
 
     # Данные для входа
     data = {
-        'login': 'psamodurov13',
-        'pass': 'Dl19HP36',
+        'login': '---',
+        'pass': '---',
         'send': '%D0%92%D0%BE%D0%B9%D1%82%D0%B8',
         'js-check': 'js-enabled'
     }
