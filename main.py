@@ -34,7 +34,7 @@ def main():
     data = {
         'login': '',
         'pass': '',
-        'send': '',
+        'send': '%D0%92%D0%BE%D0%B9%D1%82%D0%B8',
         'js-check': 'js-enabled'
     }
 
