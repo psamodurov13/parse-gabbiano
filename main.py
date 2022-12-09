@@ -5,7 +5,7 @@ import re
 import pandas as pd
 
 
-# Замена европейских размеров на российские, исправление ошибок
+# Replace euro sizes for russian sizes and error correction
 def replace_size(size):
     replace_dict = {'В': 'B', 'С': 'C', 'Е': 'E', 'чёрный': '', 'розовый': '',
                     'нет в наличии.': '', ' ': ''}
@@ -19,7 +19,7 @@ def replace_size(size):
         size = str(int(size[:2]) + 6) + size[2:]
     except Exception:
         size = None
-        print('российский размер не посчитан')
+        print('Error of size')
     return size
 
 
@@ -27,14 +27,14 @@ def main():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15'
     }
-    # Страница входа
+    # Login page
     url = 'http://mewa-styl.ru/reg/auth'
 
-    # Данные для входа
+    # Parameters for log in
     data = {
-        'login': '---',
-        'pass': '---',
-        'send': '%D0%92%D0%BE%D0%B9%D1%82%D0%B8',
+        'login': '',
+        'pass': '',
+        'send': '',
         'js-check': 'js-enabled'
     }
 
@@ -42,16 +42,16 @@ def main():
     auth = s.post(url=url, data=data, headers=headers)
     ulr_products = 'http://mewa-styl.ru/ishop/1_0'
     html = s.get(ulr_products).text
-    # Сбор ссылок на товары
+    # Get products links
     soup = bs(html, 'html.parser')
     urls = soup.find_all('a', class_='show_product')
     urls = [i.get('href') for i in urls]
-    print('Всего: ', len(urls))
+    print('Total: ', len(urls))
 
     products = {}
     count = 0
 
-    # Собираем цены и размеры для каждого товара
+    # Get price and sizes for products
     for i in urls:
         count += 1
         html = s.get(i).text
@@ -68,20 +68,20 @@ def main():
         except Exception:
             print(i, Exception)
             products[i] = [''] * 6
-        print(f'Обработано {count}/{len(urls)}')
+        print(f'Processed: {count}/{len(urls)}')
 
-    # Загружаем в json
+    # Dump in json
     with open('products.json', 'w') as prods:
         json.dump(products, prods, ensure_ascii=False, indent=4)
 
-    data = pd.read_json('/Users/psamodurov13/PycharmProjects/parse-gabbiano/products.json', orient='index')
+    data = pd.read_json('products.json', orient='index')
     data.columns = ['id', 'name', 'desc', 'price', 'img', 'size']
     data = data[data['size'] != '']
 
-    # Загружаем в xml
+    # Create xml
     with open('gabbiano.xml', 'w') as file:
         file.write(data.to_xml())
-        print('XML - создан')
+        print('XML is created')
 
 
 if __name__ == '__main__':
