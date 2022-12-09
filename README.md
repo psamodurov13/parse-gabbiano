@@ -1,8 +1,10 @@
-# Парсинг товаров с сайта поставщика
+# Get products info from supplier's website
 
-Парсинг данных о товаре с сайта поставщика. 
- - собираем список товаров с сайта
- - собираем значения параметров (название, цена, размеры, картинка)
- - меняем европейские размеры на российские
- - исправляем ошибки в размерах
- - формируем XML файл c данной информацией
+Parsing product data from the supplier's website.
+  - collecting a list of products from the website
+  - collect parameter values (name, price, sizes, picture)
+  - change European sizes to Russian
+  - fix sizing errors
+  - we form an XML file with this information
+
+Before start programm fill log in parameters. Rows 35 and 36 in main.py.
